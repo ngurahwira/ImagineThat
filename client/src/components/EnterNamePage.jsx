@@ -1,15 +1,14 @@
-// src/EnterNamePage.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const EnterNamePage = () => {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  const handleUsernameSubmit = (event) => {
+  const handleNameSubmit = (event) => {
     event.preventDefault();
-    if (username) {
-      localStorage.setItem("username", username);
+    if (name) {
+      localStorage.setItem("name", name);
       navigate("/");
     } else {
       console.log(error);
@@ -18,13 +17,13 @@ const EnterNamePage = () => {
 
   return (
     <div>
-      <form onSubmit={handleUsernameSubmit}>
-        <label htmlFor="username">Enter your name:</label>
+      <form onSubmit={handleNameSubmit}>
+        <label htmlFor="name">Enter your name:</label>
         <input
           type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <button type="submit">Enter Chat</button>
       </form>

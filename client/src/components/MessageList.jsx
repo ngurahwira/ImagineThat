@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import socket from "../socket";
 
 const MessageList = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    socket.on("chat message", (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
+    socket.on("chat message", (data) => {
+      setMessages((prevMessages) => [...prevMessages, data]);
     });
 
     return () => {
@@ -16,8 +16,10 @@ const MessageList = () => {
 
   return (
     <ul>
-      {messages.map((message, index) => (
-        <li key={index}>{message}</li>
+      {messages.map((msg, index) => (
+        <li key={index}>
+          <strong>{msg.name}:</strong> {msg.message}
+        </li>
       ))}
     </ul>
   );

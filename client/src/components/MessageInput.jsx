@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import socket from "../socket";
 
-const MessageInput = () => {
+const MessageInput = ({ name }) => {
   const [message, setMessage] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    socket.emit("chat message", message);
-    setMessage("");
+    if (message) {
+      socket.emit("chat message", { name, message });
+      setMessage("");
+    }
   };
 
   return (
