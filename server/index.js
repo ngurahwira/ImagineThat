@@ -23,6 +23,16 @@ io.on("connection", (socket) => {
     console.log("Message: " + msg);
     io.emit("chat message", msg);
   });
+
+  socket.on("drawing", (data) => {
+    // Meneruskan data gambar ke semua klien yang terhubung
+    socket.broadcast.emit("drawing", data);
+  });
+
+  socket.on("clearCanvas", () => {
+    // Mengirim pesan untuk membersihkan kanvas ke semua klien
+    io.emit("clearCanvas");
+  });
 });
 
 io.on("connection", (socket) => {
