@@ -29,6 +29,11 @@ io.on("connection", (socket) => {
     // Meneruskan data gambar ke semua klien yang terhubung
     socket.broadcast.emit("drawing", data);
   });
+
+  socket.on("clearCanvas", () => {
+    // Mengirim pesan untuk membersihkan kanvas ke semua klien
+    io.emit("clearCanvas");
+  });
 });
 
 server.listen(3000, () => {

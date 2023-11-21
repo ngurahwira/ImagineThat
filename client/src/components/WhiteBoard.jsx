@@ -8,6 +8,7 @@ const WhiteBoard = () => {
   const [drawing, setDrawing] = useState(false);
   const [prevX, setPrevX] = useState(0);
   const [prevY, setPrevY] = useState(0);
+  const [currentColor, setCurrentColor] = useState("black");
 
   console.log(canvasRef.current, 12);
   useEffect(() => {
@@ -26,8 +27,8 @@ const WhiteBoard = () => {
 
     socket.on("drawing", (data) => {
       if (ctx) {
-        const { x, y, prevX, prevY } = data;
-        ctx.strokeStyle = "black";
+        const { x, y, prevX, prevY, color } = data;
+        ctx.strokeStyle = color;
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
         ctx.beginPath();
@@ -53,7 +54,7 @@ const WhiteBoard = () => {
       const x = e.nativeEvent.offsetX;
       const y = e.nativeEvent.offsetY;
 
-      ctx.strokeStyle = "black";
+      ctx.strokeStyle = currentColor;
       ctx.lineWidth = 2;
       ctx.lineCap = "round";
       ctx.beginPath();
@@ -86,6 +87,11 @@ const WhiteBoard = () => {
       <div>
         <div>
           <button onClick={clearCanvas}>Clear</button>
+          <input
+            type="color"
+            value={currentColor}
+            onChange={handleColorChange}
+          />
         </div>
         <canvas
           ref={canvasRef}
