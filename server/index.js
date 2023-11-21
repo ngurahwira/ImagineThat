@@ -35,15 +35,6 @@ io.on("connection", (socket) => {
   });
 });
 
-io.on("connection", (socket) => {
-  console.log("A user connected");
-
-  socket.on("chat message", (data) => {
-    console.log("Message:", data.message, "from:", data.username);
-    io.emit("chat message", data);
-  });
-});
-
 server.listen(3000, () => {
   console.log("Listening on :3000");
 });
