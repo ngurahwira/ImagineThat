@@ -9,7 +9,7 @@ const EnterNamePage = () => {
     event.preventDefault();
     if (name) {
       localStorage.setItem("name", name);
-      navigate("/");
+      navigate("/home");
     } else {
       console.log(error);
     }

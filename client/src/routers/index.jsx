@@ -5,11 +5,11 @@ import EnterNamePage from "../components/EnterNamePage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <EnterNamePage />,
   },
   {
-    path: "/register",
-    element: <EnterNamePage />,
+    path: "/home",
+    element: <HomePage />,
   },
 ]);
 
