@@ -5,7 +5,6 @@ const socketIo = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 
-// Mengatur CORS pada Socket.IO
 const io = socketIo(server, {
   cors: {
     origin: "http://localhost:5173",
@@ -23,6 +22,15 @@ io.on("connection", (socket) => {
   socket.on("chat message", (msg) => {
     console.log("Message: " + msg);
     io.emit("chat message", msg);
+  });
+});
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("chat message", (data) => {
+    console.log("Message:", data.message, "from:", data.username);
+    io.emit("chat message", data);
   });
 });
 
