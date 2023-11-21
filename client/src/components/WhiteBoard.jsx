@@ -38,8 +38,13 @@ const WhiteBoard = () => {
       }
     });
 
+    socket.on("clearCanvas", () => {
+      clearCanvas();
+    });
+
     return () => {
       socket.off("drawing");
+      socket.off("clearCanvas");
     };
   }, [socket, ctx]);
 
