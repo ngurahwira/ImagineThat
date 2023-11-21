@@ -1,14 +1,12 @@
-// src/App.js
 import React from "react";
 import ChatRoom from "./components/ChatRoom";
-
+import { RouterProvider } from "react-router-dom";
+import router from "./routers";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <ChatRoom />
-      </header>
-    </div>
+    <>
+      <RouterProvider router={router} />
+    </>
   );
 }
 
