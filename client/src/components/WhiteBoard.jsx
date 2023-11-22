@@ -112,7 +112,7 @@ const WhiteBoard = () => {
   };
 
   return (
-    <center>
+    <>
       <div>
         <div>
           <button onClick={clearCanvas}>Clear</button>
@@ -168,7 +168,8 @@ const WhiteBoard = () => {
           Clear
         </Button>
       </div>
-    </div>
+      <div />
+    </>
   );
 };
 
