@@ -1,18 +1,23 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addMessage, selectMessages } from "../features/chat/chatSlice";
 import socket from "../socket";
 
 const MessageList = () => {
-  const [messages, setMessages] = useState([]);
+  const messages = useSelector(selectMessages);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    socket.on("chat message", (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
+    const handleNewMessage = (message) => {
+      dispatch(addMessage(message));
+    };
+
+    socket.on("chat message", handleNewMessage);
 
     return () => {
-      socket.off("chat message");
+      socket.off("chat message", handleNewMessage);
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <ul>
