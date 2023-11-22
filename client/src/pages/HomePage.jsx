@@ -1,8 +1,12 @@
+import { useState } from "react";
 import ChatRoom from "../components/ChatRoom";
 import WhiteBoard from "../components/WhiteBoard";
 
 const HomePage = () => {
   const name = localStorage.getItem("name") || "Anonymous";
+  // console.log(generate());
+  // console.log(randomWord);
+
   return (
     <>
       <div className="App">
