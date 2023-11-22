@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { Button, Form } from "react-bootstrap";
 
 const WhiteBoard = () => {
   const [socket, setSocket] = useState(null);
@@ -14,7 +15,7 @@ const WhiteBoard = () => {
     const context = canvas.getContext("2d");
     setCtx(context);
 
-    const newSocket = io("http://localhost:3000"); // Ganti dengan URL server Anda
+    const newSocket = io("http://localhost:3000");
     setSocket(newSocket);
 
     return () => newSocket.disconnect();
@@ -70,9 +71,16 @@ const WhiteBoard = () => {
       setPrevY(y);
     }
   };
-  const handleColorChange = (e) => {
-    setCurrentColor(e.target.value); // Update the current color
+  // Define a list of colors for the user to choose from
+  const colorOptions = ["black", "red", "green", "blue", "yellow", "purple"];
+
+  const selectColor = (color) => {
+    setCurrentColor(color);
   };
+
+  // const handleColorChange = (e) => {
+  //   setCurrentColor(e.target.value); // Update the current color
+  // };
 
   const handleMouseUp = () => {
     setDrawing(false);
@@ -86,27 +94,58 @@ const WhiteBoard = () => {
   };
 
   return (
-    <center>
-      <div>
-        <div>
-          <button onClick={clearCanvas}>Clear</button>
-          <input
-            type="color"
-            value={currentColor}
-            onChange={handleColorChange}
-          />
-        </div>
+    <div
+      className="d-flex justify-content-start align-items-center"
+      style={{ minHeight: "100vh" }}
+    >
+      <div className="position-relative" style={{ width: "700px" }}>
         <canvas
           ref={canvasRef}
           width={700}
-          height={400}
-          style={{ borderStyle: "solid" }}
+          height={450}
+          className="border"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
-        ></canvas>
+          style={{ backgroundColor: "white", borderRadius: 10 }}
+        />
+
+        {/* Color options */}
+        <div style={{ position: "absolute", top: "86%", left: "50px" }}>
+          {colorOptions.map((color) => (
+            <Button
+              key={color}
+              className="rounded-circle"
+              style={{
+                backgroundColor: color,
+                margin: "0 4px",
+                width: "30px",
+                height: "30px",
+                padding: "0",
+                display: "inline-block",
+                border: "none",
+              }}
+              onClick={() => selectColor(color)}
+              aria-label={`Select ${color}`}
+            />
+          ))}
+        </div>
+
+        {/* Clear button */}
+        <Button
+          variant="outline-secondary"
+          onClick={clearCanvas}
+          style={{
+            position: "absolute",
+            top: "90%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          Clear
+        </Button>
       </div>
-    </center>
+    </div>
   );
 };
 
