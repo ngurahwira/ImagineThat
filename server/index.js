@@ -13,42 +13,13 @@ const io = socketIo(server, {
   },
 });
 
-const words = [
-  "apple",
-  "banana",
-  "cherry",
-  "orange",
-  "crocodile",
-  "camel",
-  "shark",
-  "ambulance",
-  "computer",
-  "lego-batman",
-];
-let currentWordIndex = -1;
 io.on("connection", (socket) => {
   console.log("A user connected");
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
-  function wordForTheDrawer() {
-    currentWordIndex = Math.floor(Math.random() * words.length);
-    const wordToDraw = words[currentWordIndex];
-    socket.emit("wordToDraw", wordToDraw);
-  }
-  socket.on("guessWord", (guessedWord) => {
-    if (currentWordIndex !== -1) {
-      const actualWord = words[currentWordIndex];
-      if (guessedWord === actualWord) {
-        io.emit("guessResult", { status: true });
-        sendWordToDrawer();
-      } else {
-        socket.emit("guessResult", { status: false });
-      }
-    }
-  });
-  wordForTheDrawer();
+
   socket.on("chat message", (msg) => {
     console.log("Message: " + msg);
     io.emit("chat message", msg);
