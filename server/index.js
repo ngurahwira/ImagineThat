@@ -5,23 +5,40 @@ const socketIo = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 
+// Mengatur CORS pada Socket.IO
 const io = socketIo(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
-
+// console.log(generate, 17);
 io.on("connection", (socket) => {
   console.log("A user connected");
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
+  const words = [
+    "apple",
+    "banana",
+    "orange",
+    "pineapple",
+    "pinus",
+    "crocodile",
+    "sugar",
+    "coffee",
+    "tree",
+    "door",
+  ]; // Kata-kata yang mungkin
+  let currentWord = "";
+  currentWord = words[Math.floor(Math.random() * words.length)];
+  // console.log(currentWord, 25);
+  socket.emit("wordToDraw", currentWord);
 
-  socket.on("chat message", (data) => {
-    console.log("Message:", data.message, "from:", data.name);
-    io.emit("chat message", data);
+  socket.on("chat message", (msg) => {
+    console.log("Message: " + msg);
+    io.emit("chat message", msg);
   });
 
   socket.on("drawing", (data) => {
