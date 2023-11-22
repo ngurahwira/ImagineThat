@@ -12,8 +12,32 @@ const io = socketIo(server, {
   },
 });
 
+let users = [];
 io.on("connection", (socket) => {
-  console.log("A user connected");
+  users.push(socket.id); // Tambahkan pengguna yang baru terhubung
+  console.log("A user connected", socket.id);
+  // console.log(users);
+  socket.on("disconnect", () => {
+    users = users.filter((user) => user !== socket.id); // Hapus pengguna yang terputus
+    console.log("User disconnected", socket.id);
+  });
+
+  // Fungsi untuk memilih pengguna penggambar secara acak
+  const selectRandomDrawer = () => {
+    if (users.length > 0) {
+      return users[Math.floor(Math.random() * users.length)];
+    }
+    return null;
+  };
+
+  // Event untuk memulai permainan
+  socket.on("startGame", () => {
+    let drawer = selectRandomDrawer();
+    if (drawer) {
+      let wordToDraw = words[Math.floor(Math.random() * words.length)]; // Kata acak
+      io.to(drawer).emit("yourTurnToDraw", wordToDraw);
+    }
+  });
 
   socket.on("disconnect", () => {
     console.log("User disconnected");

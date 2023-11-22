@@ -5,6 +5,7 @@ import backgroundImage from "../assets/bg1.jpg";
 
 const HomePage = () => {
   const name = localStorage.getItem("name") || "Anonymous";
+
   return (
     <Container
       fluid
