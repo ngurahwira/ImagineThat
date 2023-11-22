@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
-
+const port = 3000;
 const app = express();
 const server = http.createServer(app);
 
@@ -18,6 +18,20 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
+  const words = [
+    "apple",
+    "banana",
+    "orange",
+    "pineapple",
+    "pinus",
+    "crocodile",
+    "sugar",
+    "coffee",
+    "tree",
+    "door",
+  ]; // Kata-kata yang mungkin
+  let currentWord = "";
+  currentWord = words[Math.floor(Math.random() * words.length)];
 
   socket.on("chat message", (data) => {
     console.log("Message:", data.message, "from:", data.name);
@@ -33,6 +47,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("Listening on :3000");
+server.listen(port, () => {
+  console.log("Listening on", port);
 });
