@@ -11,24 +11,22 @@ const ChatRoom = () => {
   return (
     <Provider store={store}>
       <div>
-        <MessageList />
-        <MessageInput name={name} />
-    <Card
-      style={{
-        width: "100%",
-        maxWidth: "600px",
-        margin: "auto",
-        marginTop: "100px",
-      }}
-    >
-      <Card.Header as="h5">Chat Room</Card.Header>
-      <Card.Body style={{ height: "365px", overflowY: "scroll" }}>
-        <MessageList />
-      </Card.Body>
-      <Card.Footer>
-        <MessageInput name={name} />
-      </Card.Footer>
-    </Card>
+        <Card
+          style={{
+            width: "100%",
+            maxWidth: "600px",
+            margin: "auto",
+            marginTop: "100px",
+          }}
+        >
+          <Card.Header as="h5">Chat Room</Card.Header>
+          <Card.Body style={{ height: "365px", overflowY: "scroll" }}>
+            <MessageList />
+          </Card.Body>
+          <Card.Footer>
+            <MessageInput name={name} />
+          </Card.Footer>
+        </Card>
       </div>
     </Provider>
   );
