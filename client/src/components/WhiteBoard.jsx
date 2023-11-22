@@ -9,8 +9,6 @@ const WhiteBoard = () => {
   const [prevX, setPrevX] = useState(0);
   const [prevY, setPrevY] = useState(0);
   const [currentColor, setCurrentColor] = useState("black");
-
-  console.log(canvasRef.current, 12);
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
