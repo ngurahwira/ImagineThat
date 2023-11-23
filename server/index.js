@@ -15,7 +15,13 @@ const io = socketIo(server, {
 io.on("connection", (socket) => {
   console.log("A user connected");
 
-  socket.on("disconnect", () => {
+  socket.on("join room", ({ name }) => {
+    io.emit("user joined", { name });
+    console.log(`${name} joined the room`);
+  });
+
+  socket.on("disconnect", ({ name }) => {
+    io.emit("user left", { name });
     console.log("User disconnected");
   });
 

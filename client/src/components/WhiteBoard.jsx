@@ -10,6 +10,7 @@ const WhiteBoard = () => {
   const [prevX, setPrevX] = useState(0);
   const [prevY, setPrevY] = useState(0);
   const [currentColor, setCurrentColor] = useState("black");
+  const [lineSize, setLineSize] = useState(2);
 
   console.log(canvasRef.current, 12);
   useEffect(() => {
@@ -28,9 +29,9 @@ const WhiteBoard = () => {
 
     socket.on("drawing", (data) => {
       if (ctx) {
-        const { x, y, prevX, prevY, color } = data;
+        const { x, y, prevX, prevY, color, size } = data;
         ctx.strokeStyle = color;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = size;
         ctx.lineCap = "round";
         ctx.beginPath();
         ctx.moveTo(prevX, prevY);
@@ -61,18 +62,36 @@ const WhiteBoard = () => {
       const y = e.nativeEvent.offsetY;
 
       ctx.strokeStyle = currentColor;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = lineSize;
       ctx.lineCap = "round";
       ctx.beginPath();
       ctx.moveTo(prevX, prevY);
       ctx.lineTo(x, y);
       ctx.stroke();
 
-      socket.emit("drawing", { x, y, prevX, prevY });
+      socket.emit("drawing", {
+        x,
+        y,
+        prevX,
+        prevY,
+        size: ctx.lineWidth,
+        color: ctx.strokeStyle,
+      });
       setPrevX(x);
       setPrevY(y);
     }
   };
+
+  const handleLineSizeChange = (e) => {
+    setLineSize(parseInt(e.target.value)); // Update ukuran garis
+  };
+
+  const lineSizeOptions = [2, 10, 15];
+
+  const selectLineSize = (size) => {
+    setLineSize(size);
+  };
+
   // Define a list of colors for the user to choose from
   const colorOptions = ["black", "red", "green", "blue", "yellow", "purple"];
 
@@ -96,10 +115,7 @@ const WhiteBoard = () => {
   };
 
   return (
-    <div
-      className="d-flex justify-content-start align-items-center"
-      style={{ minHeight: "100vh" }}
-    >
+    <div className="d-flex justify-content-start align-items-center">
       <div className="position-relative" style={{ width: "700px" }}>
         <canvas
           ref={canvasRef}
@@ -110,6 +126,17 @@ const WhiteBoard = () => {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           style={{ backgroundColor: "white", borderRadius: 10 }}
+        />
+
+        {/* Divider */}
+        <hr
+          style={{
+            position: "absolute",
+            top: "78%",
+            left: 0,
+            width: "100%",
+            border: "1px solid #ccc",
+          }}
         />
 
         {/* Color options */}
@@ -129,6 +156,25 @@ const WhiteBoard = () => {
               }}
               onClick={() => selectColor(color)}
               aria-label={`Select ${color}`}
+            />
+          ))}
+        </div>
+
+        {/* Line size options */}
+        <div style={{ position: "absolute", top: "87%", left: "430px" }}>
+          {lineSizeOptions.map((size) => (
+            <Button
+              key={size}
+              className="rounded-circle"
+              style={{
+                margin: "0 4px",
+                width: `${size + 5}px`,
+                height: `${size + 10}px`,
+                display: "inline-block",
+                border: size === lineSize ? "2px solid blue" : "none",
+              }}
+              onClick={() => selectLineSize(size)}
+              aria-label={`Select line size ${size}`}
             />
           ))}
         </div>
