@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { Button, Form } from "react-bootstrap";
+import socket from "../socket";
 
 const WhiteBoard = () => {
   const [socket, setSocket] = useState(null);
@@ -19,10 +20,10 @@ const WhiteBoard = () => {
     const context = canvas.getContext("2d");
     setCtx(context);
 
-    const newSocket = io("https://server-game.fly.dev/");
-    setSocket(newSocket);
+    // const newSocket = io("https://server-game.fly.dev/");
+    // setSocket(newSocket);
 
-    return () => newSocket.disconnect();
+    return () => socket.disconnect();
   }, []);
 
   useEffect(() => {

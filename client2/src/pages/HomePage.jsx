@@ -2,7 +2,6 @@ import ChatRoom from "../components/ChatRoom";
 import WhiteBoard from "../components/WhiteBoard";
 import { Container } from "react-bootstrap";
 import backgroundImage from "../assets/bg1.jpg";
-import socket from "../socket";
 
 const HomePage = () => {
   const name = localStorage.getItem("name") || "Anonymous";
