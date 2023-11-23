@@ -56,7 +56,6 @@ const WhiteBoard = () => {
       setIsGuesser(true);
       alert("Your turn to guess!");
     });
-
     return () => {
       socket.off("drawing");
       socket.off("clearCanvas");
