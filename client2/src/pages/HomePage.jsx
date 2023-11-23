@@ -2,9 +2,13 @@ import ChatRoom from "../components/ChatRoom";
 import WhiteBoard from "../components/WhiteBoard";
 import { Container } from "react-bootstrap";
 import backgroundImage from "../assets/bg1.jpg";
+import socket from "../socket";
 
 const HomePage = () => {
   const name = localStorage.getItem("name") || "Anonymous";
+  const startGame = () => {
+    socket.emit("startGame");
+  };
   return (
     <Container
       fluid
@@ -22,6 +26,7 @@ const HomePage = () => {
         alignItems: "stretch",
       }}
     >
+      <button onClick={startGame}>Start Game</button>
       <div className="App">
         <h2>Welcome, {name}</h2>
         <header

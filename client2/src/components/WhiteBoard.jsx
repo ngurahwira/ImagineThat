@@ -10,7 +10,9 @@ const WhiteBoard = () => {
   const [prevX, setPrevX] = useState(0);
   const [prevY, setPrevY] = useState(0);
   const [currentColor, setCurrentColor] = useState("black");
-
+  const [isDrawer, setIsDrawer] = useState(false);
+  const [isGuesser, setIsGuesser] = useState(false);
+  const [wordToDraw, setWordToDraw] = useState("");
   console.log(canvasRef.current, 12);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -43,6 +45,18 @@ const WhiteBoard = () => {
       clearCanvas();
     });
 
+    socket.on("yourTurnToDraw", (word) => {
+      setWordToDraw(word);
+      setIsDrawer(true);
+      alert(`Your turn to draw: ${word}`); // atau tampilkan di UI
+    });
+
+    socket.on("startGuessing", () => {
+      setIsDrawer(false);
+      setIsGuesser(true);
+      alert("Your turn to guess!");
+    });
+
     return () => {
       socket.off("drawing");
       socket.off("clearCanvas");
@@ -50,12 +64,14 @@ const WhiteBoard = () => {
   }, [socket, ctx]);
 
   const handleMouseDown = (e) => {
+    if (!isDrawer) return;
     setDrawing(true);
     setPrevX(e.nativeEvent.offsetX);
     setPrevY(e.nativeEvent.offsetY);
   };
 
   const handleMouseMove = (e) => {
+    if (!drawing || !isDrawer) return;
     if (drawing && ctx && socket) {
       const x = e.nativeEvent.offsetX;
       const y = e.nativeEvent.offsetY;
