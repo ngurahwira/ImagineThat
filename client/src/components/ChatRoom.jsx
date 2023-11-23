@@ -1,4 +1,6 @@
 import React from "react";
+import { Provider } from "react-redux";
+import store from "../app/store";
 import { Card } from "react-bootstrap";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
@@ -7,6 +9,10 @@ const ChatRoom = () => {
   const name = localStorage.getItem("name") || "Anonymous";
 
   return (
+    <Provider store={store}>
+      <div>
+        <MessageList />
+        <MessageInput name={name} />
     <Card
       style={{
         width: "100%",
@@ -22,6 +28,8 @@ const ChatRoom = () => {
         <MessageInput name={name} />
       </Card.Footer>
     </Card>
+      </div>
+    </Provider>
   );
 };
 

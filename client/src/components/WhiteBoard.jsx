@@ -18,7 +18,7 @@ const WhiteBoard = () => {
     const context = canvas.getContext("2d");
     setCtx(context);
 
-    const newSocket = io("http://localhost:3000"); // Ganti dengan URL server Anda
+    const newSocket = io("http://localhost:3000");
     setSocket(newSocket);
 
     return () => newSocket.disconnect();
@@ -68,6 +68,7 @@ const WhiteBoard = () => {
       ctx.moveTo(prevX, prevY);
       ctx.lineTo(x, y);
       ctx.stroke();
+
 
       socket.emit("drawing", {
         x,
