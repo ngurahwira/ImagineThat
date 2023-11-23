@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 
 import backgroundImage from "../assets/bg.jpg";
+import socket from "../socket";
 
 const EnterNamePage = () => {
   const [name, setName] = useState("");
@@ -20,6 +21,7 @@ const EnterNamePage = () => {
     if (name) {
       localStorage.setItem("name", name);
       navigate("/home");
+      socket.emit("startGame");
     } else {
       console.log(error);
     }
