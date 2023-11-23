@@ -13,16 +13,29 @@ const io = socketIo(server, {
 });
 
 let users = [];
+let drawingUser = null;
+let guessingUser = null;
 io.on("connection", (socket) => {
-  users.push(socket.id); // Tambahkan pengguna yang baru terhubung
+  users.push(socket.id);
   console.log("A user connected", socket.id);
-  // console.log(users);
+  console.log(users);
+
   socket.on("disconnect", () => {
-    users = users.filter((user) => user !== socket.id); // Hapus pengguna yang terputus
+    users = users.filter((user) => user !== socket.id);
     console.log("User disconnected", socket.id);
   });
 
-  // Fungsi untuk memilih pengguna penggambar secara acak
+  socket.on("startGame", () => {
+    drawingUser = selectRandomDrawer();
+    guessingUser = selectRandomGuesser();
+
+    if (drawingUser && guessingUser) {
+      let wordToDraw = words[Math.floor(Math.random() * words.length)];
+      io.to(drawingUser).emit("yourTurnToDraw", wordToDraw);
+      io.to(guessingUser).emit("startGuessing");
+    }
+  });
+
   const selectRandomDrawer = () => {
     if (users.length > 0) {
       return users[Math.floor(Math.random() * users.length)];
@@ -30,18 +43,16 @@ io.on("connection", (socket) => {
     return null;
   };
 
-  // Event untuk memulai permainan
-  socket.on("startGame", () => {
-    let drawer = selectRandomDrawer();
-    if (drawer) {
-      let wordToDraw = words[Math.floor(Math.random() * words.length)]; // Kata acak
-      io.to(drawer).emit("yourTurnToDraw", wordToDraw);
+  const selectRandomGuesser = () => {
+    const availableUsers = users.filter((user) => user !== drawingUser);
+    if (availableUsers.length > 0) {
+      return availableUsers[Math.floor(Math.random() * availableUsers.length)];
     }
-  });
+    return null;
+  };
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
+  // ... (event listeners for chat, drawing, clearCanvas, etc.)
+
   const words = [
     "apple",
     "banana",
@@ -53,10 +64,7 @@ io.on("connection", (socket) => {
     "coffee",
     "tree",
     "door",
-  ]; // Kata-kata yang mungkin
-  let currentWord = "";
-  currentWord = words[Math.floor(Math.random() * words.length)];
-
+  ];
   socket.on("chat message", (data) => {
     console.log("Message:", data.message, "from:", data.name);
     io.emit("chat message", data);
