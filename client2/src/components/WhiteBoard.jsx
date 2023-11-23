@@ -19,7 +19,7 @@ const WhiteBoard = () => {
     const context = canvas.getContext("2d");
     setCtx(context);
 
-    const newSocket = io("http://localhost:3000");
+    const newSocket = io("https://server-game.fly.dev/");
     setSocket(newSocket);
 
     return () => newSocket.disconnect();
