@@ -18,11 +18,10 @@ const ChatRoom = () => {
         width: "100%",
         maxWidth: "600px",
         margin: "auto",
-        marginTop: "100px",
       }}
     >
       <Card.Header as="h5">Chat Room</Card.Header>
-      <Card.Body style={{ height: "365px", overflowY: "scroll" }}>
+      <Card.Body style={{ height: "355px", overflowY: "scroll" }}>
         <MessageList />
       </Card.Body>
       <Card.Footer>

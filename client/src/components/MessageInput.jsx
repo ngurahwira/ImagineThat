@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import socket from "../socket";
+import { Form, FormControl, Button, InputGroup } from "react-bootstrap";
 
 const MessageInput = ({ name }) => {
   const [message, setMessage] = useState("");
@@ -13,14 +14,23 @@ const MessageInput = ({ name }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button type="submit">Send</button>
-    </form>
+    <Form onSubmit={handleSubmit}>
+      <InputGroup>
+        <FormControl
+          type="text"
+          placeholder="Type message here..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <Button
+          variant="primary"
+          type="submit"
+          style={{ backgroundColor: "#7ACAD3", borderColor: "white" }}
+        >
+          Send
+        </Button>
+      </InputGroup>
+    </Form>
   );
 };
 
