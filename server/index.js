@@ -5,6 +5,10 @@ const socketIo = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 const io = socketIo(server, {
   cors: {
     origin: "*",
