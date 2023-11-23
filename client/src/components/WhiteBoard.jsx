@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { Button, Form } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEraser } from "@fortawesome/free-solid-svg-icons";
 
 const WhiteBoard = () => {
   const [socket, setSocket] = useState(null);
@@ -18,7 +20,7 @@ const WhiteBoard = () => {
     const context = canvas.getContext("2d");
     setCtx(context);
 
-    const newSocket = io("http://localhost:3000");
+    const newSocket = io("https://server-game.fly.dev/");
     setSocket(newSocket);
 
     return () => newSocket.disconnect();
@@ -69,7 +71,6 @@ const WhiteBoard = () => {
       ctx.lineTo(x, y);
       ctx.stroke();
 
-
       socket.emit("drawing", {
         x,
         y,
@@ -87,7 +88,11 @@ const WhiteBoard = () => {
     setLineSize(parseInt(e.target.value)); // Update ukuran garis
   };
 
-  const lineSizeOptions = [2, 10, 15];
+  const lineSizeOptionsWithLabels = [
+    { size: 2, label: "sm" },
+    { size: 10, label: "md" },
+    { size: 15, label: "lg" },
+  ];
 
   const selectLineSize = (size) => {
     setLineSize(size);
@@ -100,9 +105,9 @@ const WhiteBoard = () => {
     setCurrentColor(color);
   };
 
-  // const handleColorChange = (e) => {
-  //   setCurrentColor(e.target.value); // Update the current color
-  // };
+  const handleColorChange = (e) => {
+    setCurrentColor(e.target.value); // Update the current color
+  };
 
   const handleMouseUp = () => {
     setDrawing(false);
@@ -121,7 +126,7 @@ const WhiteBoard = () => {
         <canvas
           ref={canvasRef}
           width={700}
-          height={450}
+          height={451}
           className="border"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -140,8 +145,12 @@ const WhiteBoard = () => {
           }}
         />
 
+        <div style={{ position: "absolute", top: "87%", left: "20px" }}>
+          <p>Color :</p>
+        </div>
+
         {/* Color options */}
-        <div style={{ position: "absolute", top: "86%", left: "50px" }}>
+        <div style={{ position: "absolute", top: "87%", left: "70px" }}>
           {colorOptions.map((color) => (
             <Button
               key={color}
@@ -161,23 +170,58 @@ const WhiteBoard = () => {
           ))}
         </div>
 
+        <div style={{ position: "absolute", top: "87%", left: "400px" }}>
+          <p>Size :</p>
+        </div>
+
         {/* Line size options */}
-        <div style={{ position: "absolute", top: "87%", left: "430px" }}>
-          {lineSizeOptions.map((size) => (
+        <div style={{ position: "absolute", top: "87%", left: "442px" }}>
+          {lineSizeOptionsWithLabels.map(({ size, label }) => (
             <Button
               key={size}
               className="rounded-circle"
               style={{
+                backgroundColor: "white",
                 margin: "0 4px",
-                width: `${size + 5}px`,
-                height: `${size + 10}px`,
-                display: "inline-block",
-                border: size === lineSize ? "2px solid blue" : "none",
+                width: "30px",
+                height: "30px",
+                padding: "0",
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderColor: "black",
+                fontSize: "12px",
+                color: "black",
               }}
               onClick={() => selectLineSize(size)}
-              aria-label={`Select line size ${size}`}
-            />
+              aria-label={`Select line size ${label}`}
+            >
+              {label.toUpperCase()}
+            </Button>
           ))}
+        </div>
+
+        {/* Eraser Option */}
+        <div style={{ position: "absolute", top: "87%", left: "560px" }}>
+          <Button
+            className="rounded-circle"
+            style={{
+              backgroundColor: "white",
+              margin: "0 4px",
+              width: "30px",
+              height: "30px",
+              padding: "0",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid black",
+              color: "black",
+            }}
+            onClick={() => setCurrentColor("#FFFFFF")}
+            aria-label="Eraser"
+          >
+            <FontAwesomeIcon icon={faEraser} />
+          </Button>
         </div>
 
         {/* Clear button */}

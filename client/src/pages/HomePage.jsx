@@ -22,13 +22,26 @@ const HomePage = () => {
         alignItems: "stretch",
       }}
     >
-      <div className="App">
-        <h2>Welcome, {name}</h2>
+      <div className="App" style={{ paddingTop: 20 }}>
+        <h2
+          className="p-2 border rounded-3 bg-light"
+          style={{ width: 300, fontFamily: "Mochiy Pop One" }}
+        >
+          <span style={{ color: "#7ACAD3" }}>Hello, </span>
+          <span style={{ color: "orange" }}>{name}</span>
+        </h2>
         <header
           className="App-header"
-          style={{ display: "flex", width: "100%", gap: "40px" }}
+          style={{
+            display: "flex",
+            width: "100%",
+            gap: "20px",
+            alignItems: "center",
+          }}
         >
-          <WhiteBoard style={{ flex: 1 }} />
+          <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
+            <WhiteBoard />
+          </div>
           <ChatRoom style={{ flex: 1 }} />
         </header>
       </div>

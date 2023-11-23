@@ -20,8 +20,6 @@ const EnterNamePage = () => {
     if (name) {
       localStorage.setItem("name", name);
       navigate("/home");
-    } else {
-      console.log(error);
     }
   };
 
